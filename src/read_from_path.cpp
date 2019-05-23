@@ -7,7 +7,7 @@
 #include "read_from_path.hpp"
 #include "mqueue.hpp"
 
-void get_path_content(mqueue<std::string> &index_queue, std::string &dir_name) {
+void get_path_content(Mqueue<std::string> &index_queue, std::string &dir_name) {
     std::vector<std::string> files_to_index;
     for (auto t = boost::filesystem::recursive_directory_iterator(dir_name);
          t != boost::filesystem::recursive_directory_iterator{}; ++t) {
@@ -21,7 +21,7 @@ void get_path_content(mqueue<std::string> &index_queue, std::string &dir_name) {
             std::ifstream txt_file(v);
             if (txt_file.is_open()) {
                 read_from_txt(txt_file, text);
-                index_queue.push(text);
+                index_queue.push(std::move(text));
             } else {
                 continue;
             }

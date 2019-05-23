@@ -9,6 +9,6 @@
 #include "mqueue.hpp"
 
 
-void get_path_content(mqueue<std::string> &, std::string &);
+void get_path_content(Mqueue<std::string> &, std::string &);
 
 #endif

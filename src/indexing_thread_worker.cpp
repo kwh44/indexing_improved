@@ -2,12 +2,11 @@
 #include "indexing_thread_worker.hpp"
 #include "mqueue.hpp"
 
-void index_worker(mqueue<std::string> &index_queue, mqueue<std::map<std::string, std::size_t>> &merge_queue) {
-    std::string string_to_index;
+void index_worker(Mqueue<std::string> &index_queue, Mqueue<std::map<std::string, std::size_t>> &merge_queue) {
     while (true) {
-        string_to_index = std::move(index_queue.pop());
+        std::string string_to_index(index_queue.pop());
         if (string_to_index.empty()) {
-            index_queue.push(string_to_index);
+            index_queue.push(std::move(string_to_index));
 //            finish work
             break;
         }
