@@ -35,6 +35,7 @@ add_executable(indexing main.cpp
         include/read_txt_to_string.hpp src/read_txt_to_string.cpp
         include/count_token_usage.hpp src/count_token_usage.cpp
         include/indexing_thread_worker.hpp
+        include/mqueue.hpp src/mqueue.cpp
         src/indexing_thread_worker.cpp
         include/merging_thread_worker.hpp src/merging_thread_worker.cpp)
 

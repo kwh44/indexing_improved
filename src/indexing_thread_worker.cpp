@@ -1,8 +1,8 @@
 
 #include "indexing_thread_worker.hpp"
+#include "mqueue.hpp"
 
-
-void index_worker(queue<std::string> &index_queue, queue<std::map<std::string, std::size_t>> &merge_queue) {
+void index_worker(mqueue<std::string> &index_queue, mqueue<std::map<std::string, std::size_t>> &merge_queue) {
     std::string string_to_index;
     while (true) {
         string_to_index = std::move(index_queue.pop());

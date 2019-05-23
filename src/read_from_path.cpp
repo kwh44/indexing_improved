@@ -5,8 +5,9 @@
 #include <boost/locale.hpp>
 #include "read_txt_to_string.hpp"
 #include "read_from_path.hpp"
+#include "mqueue.hpp"
 
-void get_path_content(queue<std::string> &index_queue, std::string &dir_name) {
+void get_path_content(mqueue<std::string> &index_queue, std::string &dir_name) {
     std::vector<std::string> files_to_index;
     for (auto t = boost::filesystem::recursive_directory_iterator(dir_name);
          t != boost::filesystem::recursive_directory_iterator{}; ++t) {

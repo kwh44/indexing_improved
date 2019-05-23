@@ -9,9 +9,8 @@
 #include "count_token_usage.hpp"
 
 #include <boost/lockfree/queue.hpp>
+#include "mqueue.hpp"
 
-using boost::lockfree::queue;
-
-void index_worker(queue<std::string> &index_queue, queue<std::map<std::string, std::size_t>> &merge_queue);
+void index_worker(mqueue<std::string> &index_queue, mqueue<std::map<std::string, std::size_t>> &merge_queue);
 
 #endif //INDEXING_INDEXING_THREAD_WORKER_H

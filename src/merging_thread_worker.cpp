@@ -1,6 +1,6 @@
 #include "merging_thread_worker.hpp"
-
-void merge_worker(queue<std::map<std::string, size_t>> &merge_queue) {
+#include "mqueue.hpp"
+void merge_worker(mqueue<std::map<std::string, size_t>> &merge_queue) {
     std::map<std::string, size_t> tls_map;
     while (true) {
         auto single_dict = merge_queue.pop();

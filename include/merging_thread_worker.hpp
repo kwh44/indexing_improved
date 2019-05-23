@@ -11,8 +11,7 @@
 #include <condition_variable>
 #include <algorithm>
 #include <boost/lockfree/queue.hpp>
-
-using boost::lockfree::queue;
-void merge_worker(queue<std::map<std::string, size_t>> &merge_queue);
+#include "mqueue.hpp"
+void merge_worker(mqueue<std::map<std::string, size_t>> &merge_queue);
 
 #endif //INDEXING_MERGING_THREAD_WORKER_H

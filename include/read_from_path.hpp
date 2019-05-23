@@ -6,10 +6,9 @@
 #include <mutex>
 #include <condition_variable>
 #include <boost/lockfree/queue.hpp>
-// queue of blocks, dir name, cv, m
+#include "mqueue.hpp"
 
-using boost::lockfree::queue;
 
-void get_path_content(queue<std::string> &, std::string &);
+void get_path_content(mqueue<std::string> &, std::string &);
 
 #endif
