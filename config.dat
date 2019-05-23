@@ -1,0 +1,5 @@
+indir="../testdir"
+out_by_a="res_a.txt"
+out_by_n="res_n.txt"
+indexing_threads=3
+merging_threads=3
