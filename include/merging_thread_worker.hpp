@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <boost/lockfree/queue.hpp>
 #include "mqueue.hpp"
+
 void merge_worker(Mqueue<std::map<std::string, size_t>> &merge_queue);
 
 #endif //INDEXING_MERGING_THREAD_WORKER_H

@@ -22,7 +22,6 @@ set(Boost_USE_MULTITHREAD ON)
 
 include_directories(include)
 
-
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(indexing main.cpp

@@ -1,5 +1,6 @@
 #include "merging_thread_worker.hpp"
 #include "mqueue.hpp"
+
 void merge_worker(Mqueue<std::map<std::string, size_t>> &merge_queue) {
     std::map<std::string, size_t> tls_map;
     while (true) {
