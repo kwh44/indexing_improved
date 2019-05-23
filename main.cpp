@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     std::string filename("../config.dat");
-    // user's config file
+
     if (argc == 2) {
         filename = std::string(argv[1]);
     }
@@ -50,7 +50,6 @@ int main(int argc, char **argv) {
         return 2;
     }
 
-    // check output files
     std::ofstream output_alphabet(conf_data.output_alphabet_order);
     if (!config_stream.is_open()) {
         std::cerr << "Failed to open file for alphabet order result" << std::endl;
@@ -73,39 +72,44 @@ int main(int argc, char **argv) {
     boost::locale::generator gen;
     std::locale::global(gen("en_us.UTF-8"));
 
-    // array of blocks
+
     Mqueue<std::string> index_queue;
     Mqueue<std::map<std::string, size_t>> merge_queue;
 
     auto start = get_current_time_fenced();
     std::thread reader(get_path_content, std::ref(index_queue), std::ref(conf_data.input_dir_name));
 
-
     boost::asio::thread_pool indexing_pool(conf_data.indexing_thread_num);
     boost::asio::thread_pool merge_pool(conf_data.merging_thread_num);
 
 
-    for (int i = 0; i <conf_data.indexing_thread_num; ++i) {
+    for (int i = 0; i < conf_data.indexing_thread_num; ++i) {
         boost::asio::post(indexing_pool,
                           [&index_queue, &merge_queue]() { index_worker(index_queue, merge_queue); });
     }
 
-    for (int i = 0; i <conf_data.merging_thread_num; ++i) {
+    for (int i = 0; i < conf_data.merging_thread_num; ++i) {
         boost::asio::post(merge_pool, [&merge_queue]() { merge_worker(merge_queue); });
     }
 
     reader.join();
+#ifdef DEBUG
     std::cout << "READER JOINED" << std::endl;
+#endif
     indexing_pool.join();
     std::map<std::string, size_t> merge_queue_empty;
     merge_queue.push(std::move(merge_queue_empty));
+#ifdef DEBUG
     std::cout << "INDEXING JOINED" << std::endl;
+#endif
     merge_pool.join();
+#ifdef DEBUG
+    std::cout << "MERGING JOINED" << std::endl;
+#endif
     auto total_finish = get_current_time_fenced();
     auto final_map(merge_queue.pop());
     std::vector<std::pair<std::string, size_t>> sort_container(final_map.size());
 
-    // copy key-value pairs from the map to the vector
     std::copy(final_map.begin(), final_map.end(), sort_container.begin());
 
     // sort the pair by alphabet
@@ -126,7 +130,7 @@ int main(int argc, char **argv) {
     for (auto &v: sort_container) {
         output_count << v.first << ": " << v.second << std::endl;
     }
-    std::cout << "Total time is : " << to_us(total_finish - start) / 1000000.0 << std::endl;
+    std::cout << "Total time is (seconds): " << to_us(total_finish - start) / 1000000.0 << std::endl;
     return 0;
 
 }
