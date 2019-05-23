@@ -11,7 +11,6 @@
 #include <boost/locale/generator.hpp>
 #include <boost/locale.hpp>
 #include <boost/asio.hpp>
-#include <boost/lockfree/queue.hpp>
 #include <condition_variable>
 #include "read_config.hpp"
 #include "mqueue.hpp"
@@ -29,7 +28,7 @@ int main(int argc, char **argv) {
     // help info
     if (argc == 2 && std::string(argv[1]) == "--help") {
         std::cout << "Description\n" <<
-                  "$ ./parallel_indexing <path_to_config_file>\n";
+                  "$ ./indexing <path_to_config_file>\n";
         return 0;
     }
     std::string filename("../config.dat");

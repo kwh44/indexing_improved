@@ -61,7 +61,6 @@ void get_path_content(Mqueue<std::string> &index_queue, std::string &dir_name) {
         //push poison pill
         index_queue.push("");
     }
-    std::cout << "Reader thread finished work\n";
 }
 
 
