@@ -7,12 +7,9 @@
 
 #include <map>
 #include <string>
-#include <mutex>
-#include <condition_variable>
-#include <algorithm>
-#include <boost/lockfree/queue.hpp>
 #include "mqueue.hpp"
 
-void merge_worker(Mqueue<std::map<std::string, size_t>> &merge_queue);
+
+void merge_worker(Mqueue<std::unique_ptr<std::map<std::string, size_t>>> &merge_queue);
 
 #endif //INDEXING_MERGING_THREAD_WORKER_H

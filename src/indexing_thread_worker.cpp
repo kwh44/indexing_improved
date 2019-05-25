@@ -1,20 +1,22 @@
-
 #include "indexing_thread_worker.hpp"
-#include "mqueue.hpp"
+#include <boost/locale.hpp>
+#include <boost/locale/boundary.hpp>
 
-void index_worker(Mqueue<std::string> &index_queue, Mqueue<std::map<std::string, std::size_t>> &merge_queue) {
+void index_worker(Mqueue<std::unique_ptr<std::string>> &index_queue,
+                  Mqueue<std::unique_ptr<std::map<std::string, std::size_t>>> &merge_queue) {
     while (true) {
-        std::string string_to_index(index_queue.pop());
-        if (string_to_index.empty()) {
-            index_queue.push(std::move(string_to_index));
-//            finish work
+        auto string_to_index(std::move(index_queue.pop()));
+        if (string_to_index->empty()) {
+            index_queue.push(string_to_index);
             break;
         }
-        std::map<std::string, size_t> tls_map;
-        std::vector<std::string> tokens;
-        parse(string_to_index, tokens);
-        token_usage(string_to_index, tokens, tls_map);
-        merge_queue.push(std::move(tls_map));
+        auto tls_map = std::make_unique<std::map<std::string, size_t>>();
+        boost::locale::boundary::ssegment_index map(boost::locale::boundary::word, string_to_index->begin(),
+                                                    string_to_index->end());
+        map.rule(boost::locale::boundary::word_any);
+        for (auto v = map.begin(), end = map.end(); v != end; ++v) {
+            ++tls_map->operator[](*v);
+        }
+        if (!tls_map->empty()) merge_queue.push(tls_map);
     }
 }
-
